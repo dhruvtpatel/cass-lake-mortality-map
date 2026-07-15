@@ -102,23 +102,23 @@ function zoomTo(v){
   } else { svg.transition().duration(500).call(zoom.transform,d3.zoomIdentity); }
 }
 const VIEWS={
- region:'age-adjusted death rate vs surrounding towns (per 1,000/yr; MN avg 6.2)',
+ region:'age-adjusted death rate vs surrounding towns (per 1,000/yr; MN avg 6.0)',
  all:'all-cause death rate per 1,000 residents/yr, by ZIP-code area (MN ~7.9)',
  diox:'dioxin-related death rate per 1,000/yr, by ZIP-code area — Cass Lake is top '+P.dioxin+'% statewide (86th pct)',
  age:'median age at death by ZIP-code area — Cass Lake (63) dies younger than 98.7% of Minnesota communities',
- cross:'median age at death of the population around each of Minnesota’s 49 Superfund (NPL) sites — Cass Lake (67) is the youngest; the other 48 cluster at 74–78 (median 76)',
+ cross:'median age at death of the population within 15 km of each of Minnesota’s 49 Superfund (NPL) sites — Cass Lake (67) is the youngest; the other 48 cluster at 74–78 (median 76)',
  aian:'share of residents who are American Indian, by ZIP-code area (ACS) — the strongest statewide predictor of dying young',
  pov:'poverty rate by ZIP-code area (ACS) — a second independent driver of premature mortality',
  adj:'premature deaths ABOVE (red) or BELOW (blue) what each area’s race & poverty predict — after adjustment, Cass Lake is no longer an outlier'};
 const CALL={
- region:{big:'1.6&times;',sub:'the Minnesota death rate &mdash; the highest of any town surrounding the site.'},
+ region:{big:'1.7&times;',sub:'the Minnesota death rate (10.1 vs 6.0 per 1,000/yr) &mdash; the highest of any town surrounding the site.'},
  all:{big:'Top 33%',sub:'of Minnesota communities for overall death rate.'},
- diox:{big:'Top 14%',sub:'of Minnesota communities for dioxin-related death rate &mdash; the 86th percentile.'},
+ diox:{big:'Top 14%',sub:'of Minnesota communities for the dioxin-related death <i>rate</i> (86th percentile). But this reflects Cass Lake&rsquo;s high overall mortality, not a dioxin-specific excess &mdash; dioxin-linked cancers are actually a <b>smaller</b> share of deaths here than statewide (81 vs 99 per 1,000).'},
  age:{big:'Age 63',sub:'median age at death in Cass Lake &mdash; younger than 98.7% of Minnesota communities.'},
  cross:{big:'Age 67',sub:'youngest-dying of Minnesota’s 49 Superfund sites (the other 48: median 76). But Cass Lake is the <b>only majority-Native</b> site — across all 49, the more Native the population, the younger people die (r=&minus;0.59). The gap tracks Native health disparities, not proximity to contamination.'},
  aian:{big:'55%',sub:'of Cass Lake residents are American Indian. Statewide this is the single strongest predictor of dying young — an American Indian Minnesotan has <b>5&times;</b> the odds of death before 65.'},
  pov:{big:'22%',sub:'of Cass Lake lives in poverty — 2.4&times; the state rate, and a second independent driver of the mortality gap, alongside race.'},
- adj:{big:'1.07&times;',sub:'After controlling for race, smoking, sex and poverty, living in Cass Lake no longer predicts premature death — its odds fall from <b>3.1&times;</b> to <b>1.07&times;</b> (not significant). Statewide, dying young tracks Native population and poverty, not the Superfund site.'}};
+ adj:{big:'1.06&times;',sub:'After controlling for race, poverty, sex and tobacco, living in Cass Lake no longer predicts premature death — its odds fall from <b>3.1&times;</b> to <b>1.06&times;</b> (not significant). Statewide, dying young tracks Native population and poverty, not the Superfund site.'}};
 function redraw(){
   var c=tc();
   basePath.attr('fill',c.base).attr('stroke',c.bs);
@@ -131,7 +131,7 @@ function redraw(){
       mark(gReg,d[2],d[1],function(g){
         if(isCL){var h=g.append('circle').attr('r',R+6).attr('fill','none').attr('stroke','#b91c0e').attr('stroke-width',1.8);h.append('animate').attr('attributeName','r').attr('values',(R+4)+';'+(R+13)+';'+(R+4)).attr('dur','2.2s').attr('repeatCount','indefinite');h.append('animate').attr('attributeName','opacity').attr('values','0.85;0;0.85').attr('dur','2.2s').attr('repeatCount','indefinite');}
         g.append('circle').attr('r',R).attr('fill',col(d[3])).attr('fill-opacity',.95).attr('stroke',isCL?'#000':c.bs).attr('stroke-width',isCL?2.8:.8)
-          .on('mousemove',function(e){showtip(e,'<b>'+d[0]+'</b><br>'+d[3]+' /1k/yr &middot; '+(d[3]/6.2).toFixed(1)+'&times; MN');}).on('mouseleave',hidetip);
+          .on('mousemove',function(e){showtip(e,'<b>'+d[0]+'</b><br>'+d[3]+' /1k/yr &middot; '+(d[3]/6.0).toFixed(1)+'&times; MN');}).on('mouseleave',hidetip);
         g.append('text').text(d[0]).attr('y',-R-4).attr('text-anchor','middle').attr('font-size',isCL?13:10.5).attr('font-weight',isCL?700:400).attr('fill',c.txt).attr('paint-order','stroke').attr('stroke',c.ts).attr('stroke-width',3);});});
   } else if(view==='all'||view==='diox'){
     var key=view==='all'?'r':'dr', dom=view==='all'?[6,12]:[0.5,1.9], col=d3.scaleSequential(reds).domain(dom);
